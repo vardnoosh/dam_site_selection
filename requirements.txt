@@ -1,0 +1,10 @@
+geopandas
+rasterio
+sqlalchemy
+psycopg2-binary
+pyyaml
+pandas
+numpy
+flake8
+pytest
+prefect
