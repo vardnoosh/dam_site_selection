@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  postgis:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_DB: gisdb
+      POSTGRES_USER: gis_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  airflow:
+    image: apache/airflow:2.8.1
+    depends_on:
+      - postgis
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - .:/opt/airflow/project
+    ports:
+      - "8080:8080"
+    command: >
+      bash -c "airflow db init &&
+               airflow users create --username admin --password admin \
+               --firstname admin --lastname admin --role Admin --email admin@example.com &&
+               airflow webserver & airflow scheduler"
