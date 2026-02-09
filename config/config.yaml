@@ -1,0 +1,6 @@
+database:
+  host: mydb.cluster-xxxx.us-east-1.rds.amazonaws.com
+  port: 5432
+  name: gisdb
+  user: gis_user
+  password: "{{ env.DB_PASSWORD }}"
