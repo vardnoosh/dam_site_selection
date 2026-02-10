@@ -12,10 +12,11 @@ def run():
     buffer_dist = cfg["buffers"]["settlement"]
 
     sql = f"""
-    DROP TABLE IF EXISTS settlement_buffer;
     CREATE TABLE settlement_buffer AS
-    SELECT ST_Buffer(geom, {buffer_dist}) AS geom
+    SELECT ST_Buffer(geom, 5000) AS geom
     FROM settlements;
+    
+    CREATE INDEX ON settlement_buffer USING GIST (geom);
     """
 
     with engine.begin() as conn:
